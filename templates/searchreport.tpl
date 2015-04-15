@@ -11,7 +11,7 @@
                 <tr><th>Movie</th></tr>
                         {foreach $movies as $movie}
                     <tr>
-                        <td><a href='http://www.google.com.au'>{$movie[0]}</a></td>
+                        <td><a href='DisplayMovie.php?id={$movie->id}'>{$movie->movie}</a></td>
                     </tr>
                 {/foreach}
             </table>

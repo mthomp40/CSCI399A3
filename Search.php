@@ -1,5 +1,35 @@
-<?php
+<!DOCTYPE html >
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Thommo's Movie Database</title>
+    </head>
+    <body>
+        <div id="content">
+            <h1>Search the movie records</h1>
+            <form method="POST">
+                <fieldset>
+                    Category:
+                    <select id="category" name="category">
+                        <option value="FANTASY/SCI.FI">FANTASY/SCI.FI</option>
+                        <option value="CHICK">CHICK</option>
+                        <option value="DRAMA">DRAMA</option>
+                        <option value="CRIME">CRIME</option>
+                        <option value="KIDS">KIDS</option>
+                        <option value="COMEDY">COMEDY</option>
+                        <option value="ACTION">ACTION</option>
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <legend>Action</legend>
+                    <input type="submit" value="Search Records"> 
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>
 
+<?php
 require_once("adodb5/adodb.inc.php");
 require_once("adodb5/adodb-active-record.inc.php");
 require_once("smarty3/libs/Smarty.class.php");
@@ -35,52 +65,20 @@ function connectToDatabase($dsn) {
     ADOdb_Active_Record::ClassHasMany('Moviemain', 'Moviesupps', 'fk_movie');
 }
 
-smartysetup();
-connectToDatabase("mysqli://root@localhost/a3");
-$sqlstr = "select id, movie from Moviemains";
-$stmt = $db->Prepare($sqlstr);
-$rs1 = $db->Execute($stmt);
+function doPost($category) {
+    global $smarty;
+    smartysetup();
+    connectToDatabase("mysqli://root@localhost/a3");
 
-$data = array();
-
-while (!$rs1->EOF) {
-    $mid = $rs1->fields[0];
-    $mname = $rs1->fields[1];
-
-    $item = array($mid, $mname);
-    $data[] = $item;
-    $rs1->MoveNext();
-}
-$rs1->close();
-
-$sqlstr = "select column_type from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = 'Moviemains' and COLUMN_NAME = 'mgroup'";
-$stmt = $db->Prepare($sqlstr);
-$rs1 = $db->Execute($stmt);
-
-if (!$rs1->EOF) {
-    preg_match('/enum\((.*)\)$/', str_replace("'", "", $rs1->fields[0]), $matches);
-    $vals = explode(',', $matches[1]);
+    $movie = new Moviemain();
+    $movies = $movie->Find("mgroup=?", $category);
+    $smarty->assign("movies", $movies);
+    $smarty->assign("category", $category);
+    $smarty->display("searchreport.tpl");
 }
 
-$db->close();
-$smarty->assign("movies", $data);
-$smarty->assign("category", $vals[0]);
-$smarty->display("searchreport.tpl");
-
-smartysetup();
-
-$smarty->assign('categories', $vals);
-/*
-  $smarty->assign('categories', array(
-  'FANTASY/SCI.FI',
-  'CHICK',
-  'DRAMA',
-  'CRIME',
-  'KIDS',
-  'COMEDY',
-  'ACTION'
-  ));
- */
-$smarty->assign('selectedCategory', 'KIDS');
-$smarty->display('movie.tpl');
+if (isset($_POST['category'])) {
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
+    doPost($category);
+}
 ?>
