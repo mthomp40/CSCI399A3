@@ -1,34 +1,3 @@
-<!DOCTYPE html >
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Thommo's Movie Database</title>
-    </head>
-    <body>
-        <div id="content">
-            <h1>Search the movie records</h1>
-            <form method="POST">
-                <fieldset>
-                    Category:
-                    <select id="category" name="category">
-                        <option value="FANTASY/SCI.FI">FANTASY/SCI.FI</option>
-                        <option value="CHICK">CHICK</option>
-                        <option value="DRAMA">DRAMA</option>
-                        <option value="CRIME">CRIME</option>
-                        <option value="KIDS">KIDS</option>
-                        <option value="COMEDY">COMEDY</option>
-                        <option value="ACTION">ACTION</option>
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <legend>Action</legend>
-                    <input type="submit" name="submit" value="Search Records"> 
-                </fieldset>
-            </form>
-        </div>
-    </body>
-</html>
-
 <?php
 require_once("adodb5/adodb.inc.php");
 require_once("adodb5/adodb-active-record.inc.php");
@@ -65,7 +34,11 @@ function connectToDatabase($dsn) {
     ADOdb_Active_Record::ClassHasMany('Moviemain', 'Moviesupps', 'fk_movie');
 }
 
-function doPost($category) {
+function doGet() {
+    
+}
+
+function doPost() {
     global $smarty;
     smartysetup();
     connectToDatabase("mysqli://root@localhost/a3");
@@ -78,7 +51,40 @@ function doPost($category) {
     $smarty->display("searchreport.tpl");
 }
 
-if (isset($_POST['submit'])) {
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == 'GET')
+    doGet();
+else
     doPost();
-}
 ?>
+
+<!DOCTYPE html >
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Thommo's Movie Database</title>
+    </head>
+    <body>
+        <div id="content">
+            <h1>Search the movie records</h1>
+            <form method="POST">
+                <fieldset>
+                    Category:
+                    <select id="category" name="category">
+                        <option value="FANTASY/SCI.FI">FANTASY/SCI.FI</option>
+                        <option value="CHICK">CHICK</option>
+                        <option value="DRAMA">DRAMA</option>
+                        <option value="CRIME">CRIME</option>
+                        <option value="KIDS">KIDS</option>
+                        <option value="COMEDY">COMEDY</option>
+                        <option value="ACTION">ACTION</option>
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <legend>Action</legend>
+                    <input type="submit" name="submit" value="Search Records"> 
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>

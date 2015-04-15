@@ -35,16 +35,21 @@ function connectToDatabase($dsn) {
     ADOdb_Active_Record::ClassHasMany('Moviemain', 'Moviesupps', 'fk_movie');
 }
 
-function doGet($id) {
+function doGet() {
     global $smarty;
     smartysetup();
     connectToDatabase("mysqli://root@localhost/a3");
 
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     $movie = new Moviemain();
     $movie->Load("id=?", $id);
-    var_dump($movie);
+    foreach ($movie->Moviesupps as $c) {
+        echo " $c->photocomment ";
+        $c->photocomment .= ' K.';
+        $c->Save();  ## each child record must be saved individually
+    }
     $suppdata = $movie->MovieSupps;
-    //var_dump($suppdata);
+    var_dump($suppdata);
 
     $smarty->assign('name', $movie->movie);
     $smarty->assign('category', $movie->mgroup);
@@ -53,8 +58,9 @@ function doGet($id) {
     $smarty->display('movie.tpl');
 }
 
-if (isset($_GET['id'])) {
-    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-    doGet($id);
-}
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == 'GET')
+    doGet();
+else
+    doPost();
 ?>

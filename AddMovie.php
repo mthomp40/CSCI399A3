@@ -42,24 +42,53 @@ function doPost() {
     global $smarty;
     smartysetup();
     connectToDatabase("mysqli://root@localhost/a3");
-
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
     $summary = filter_input(INPUT_POST, 'summary', FILTER_SANITIZE_SPECIAL_CHARS);
-    $dataphoto1 = filter_input(INPUT_POST, 'img1', FILTER_SANITIZE_SPECIAL_CHARS);
-    $datacomment1 = filter_input(INPUT_POST, 'info1', FILTER_SANITIZE_SPECIAL_CHARS);
-
     $movie = new Moviemain();
     $movie->movie = $name;
     $movie->mgroup = $category;
     $movie->info = $summary;
-    for ($i = 0; $i < 2; $i++)
-        $movie->Moviesupps[0] = new Moviesupp('Moviesupps');
-
+    /*
+      $i = 1;
+      while (1) {
+      echo 'in ' . $i;
+      $img = "img" . $i;
+      if (isset($_POST[$img])) {
+      echo 'adding row ' . $i;
+      $newsupp = new Moviesupp();
+      $movie->Moviesupps[0] = $newsupp;
+      $i++;
+      } else {
+      echo 'break';
+      break;
+      }
+      }
+     * 
+     */
     $movie->save();
+
+    $i = 1;
+    while (1) {
+        echo 'in ' . $i;
+        $img = "img" . $i;
+        $info = "info" . $i;
+        if (isset($_POST[$img])) {
+            $newsupp = new Moviesupp();
+            $newsupp->photo = filter_input(INPUT_POST, $img, FILTER_SANITIZE_SPECIAL_CHARS);
+            $newsupp->photocomment = filter_input(INPUT_POST, $info, FILTER_SANITIZE_SPECIAL_CHARS);
+            $newsupp->save();
+            $i++;
+        } else {
+            break;
+        }
+    }
+
+
+    $i = 1;
     foreach ($movie->Moviesupps as $c) {
-        $c->photo = $dataphoto1;
-        $c->photocomment = $datacomment1;
+        $c->photo = filter_input(INPUT_POST, 'img' + $i, FILTER_SANITIZE_SPECIAL_CHARS);
+        $c->photocomment = filter_input(INPUT_POST, 'info' + $i, FILTER_SANITIZE_SPECIAL_CHARS);
         $c->save();
     }
 }

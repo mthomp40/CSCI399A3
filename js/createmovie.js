@@ -23,8 +23,9 @@ function FileSelectHandler(e) {
                 hidden.type = "hidden";
                 hidden.name = "img" + rows;
                 hidden.value = e.target.result;
+                hidden.innerHTML = e.target.result;
                 var dropper = document.getElementById("droppertable");
-                dropper.appendChild(hidden);
+                img.appendChild(hidden);
             }
             reader.readAsDataURL(files[0]);
         }
