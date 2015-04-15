@@ -22,7 +22,7 @@
                 </fieldset>
                 <fieldset>
                     <legend>Action</legend>
-                    <input type="submit" value="Search Records"> 
+                    <input type="submit" name="submit" value="Search Records"> 
                 </fieldset>
             </form>
         </div>
@@ -70,6 +70,7 @@ function doPost($category) {
     smartysetup();
     connectToDatabase("mysqli://root@localhost/a3");
 
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
     $movie = new Moviemain();
     $movies = $movie->Find("mgroup=?", $category);
     $smarty->assign("movies", $movies);
@@ -77,8 +78,7 @@ function doPost($category) {
     $smarty->display("searchreport.tpl");
 }
 
-if (isset($_POST['category'])) {
-    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
-    doPost($category);
+if (isset($_POST['submit'])) {
+    doPost();
 }
 ?>
