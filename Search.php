@@ -35,7 +35,38 @@ function connectToDatabase($dsn) {
 }
 
 function doGet() {
-    
+    ?>
+    <!DOCTYPE html >
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Thommo's Movie Database</title>
+        </head>
+        <body>
+            <div id="content">
+                <h1>Search the movie records</h1>
+                <form method="POST">
+                    <fieldset>
+                        Category:
+                        <select id="category" name="category">
+                            <option value="FANTASY/SCI.FI">FANTASY/SCI.FI</option>
+                            <option value="CHICK">CHICK</option>
+                            <option value="DRAMA">DRAMA</option>
+                            <option value="CRIME">CRIME</option>
+                            <option value="KIDS">KIDS</option>
+                            <option value="COMEDY">COMEDY</option>
+                            <option value="ACTION">ACTION</option>
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Action</legend>
+                        <input type="submit" name="submit" value="Search Records"> 
+                    </fieldset>
+                </form>
+            </div>
+        </body>
+    </html>
+    <?php
 }
 
 function doPost() {
@@ -57,34 +88,3 @@ if ($method == 'GET')
 else
     doPost();
 ?>
-
-<!DOCTYPE html >
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Thommo's Movie Database</title>
-    </head>
-    <body>
-        <div id="content">
-            <h1>Search the movie records</h1>
-            <form method="POST">
-                <fieldset>
-                    Category:
-                    <select id="category" name="category">
-                        <option value="FANTASY/SCI.FI">FANTASY/SCI.FI</option>
-                        <option value="CHICK">CHICK</option>
-                        <option value="DRAMA">DRAMA</option>
-                        <option value="CRIME">CRIME</option>
-                        <option value="KIDS">KIDS</option>
-                        <option value="COMEDY">COMEDY</option>
-                        <option value="ACTION">ACTION</option>
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <legend>Action</legend>
-                    <input type="submit" name="submit" value="Search Records"> 
-                </fieldset>
-            </form>
-        </div>
-    </body>
-</html>

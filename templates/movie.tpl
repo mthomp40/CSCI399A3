@@ -12,10 +12,10 @@
             <p>{$info}</p>
             <h3>Supplementary Data</h3>
             <table>
-                {foreach $suppdata as $suppdatarow}
+                {foreach item=supp from=$moviesupp}
                     <tr>
-                        <td><img src="{$suppdatarow[2]}"></td>
-                        <td>{$suppdatarow[3]}</td>
+                        <td><img width="250" height="250" src='{$supp['photo']}'></td>
+                        <td>{$supp['photocomment']}</td>
                     </tr>
                 {/foreach}
             </table>

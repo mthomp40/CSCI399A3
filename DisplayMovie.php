@@ -43,18 +43,17 @@ function doGet() {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     $movie = new Moviemain();
     $movie->Load("id=?", $id);
+    $suppdata = array();
     foreach ($movie->Moviesupps as $c) {
-        echo " $c->photocomment ";
-        $c->photocomment .= ' K.';
-        $c->Save();  ## each child record must be saved individually
+        $moviesupp = array();
+        $moviesupp['photo'] = $c->photo;
+        $moviesupp['photocomment'] = $c->photocomment;
+        array_push($suppdata, $moviesupp);
     }
-    $suppdata = $movie->MovieSupps;
-    var_dump($suppdata);
-
     $smarty->assign('name', $movie->movie);
     $smarty->assign('category', $movie->mgroup);
     $smarty->assign('info', $movie->info);
-    $smarty->assign('suppdata', $suppdata);
+    $smarty->assign('moviesupp', $suppdata);
     $smarty->display('movie.tpl');
 }
 
