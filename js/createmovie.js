@@ -24,13 +24,11 @@ function FileSelectHandler(e) {
                 hidden.name = "img" + rows;
                 hidden.value = e.target.result;
                 hidden.innerHTML = e.target.result;
-                var dropper = document.getElementById("droppertable");
                 img.appendChild(hidden);
             }
             reader.readAsDataURL(files[0]);
         }
     }
-
 }
 
 function addData() {

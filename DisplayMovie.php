@@ -57,9 +57,5 @@ function doGet() {
     $smarty->display('movie.tpl');
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-if ($method == 'GET')
-    doGet();
-else
-    doPost();
+doGet();
 ?>

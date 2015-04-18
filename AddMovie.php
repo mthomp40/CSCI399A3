@@ -125,9 +125,22 @@ function doPost() {
             break;
         }
     }
-    echo "<h1>Movie records</h1>";
-    echo "Created a record for " . $movie->movie . " (it is record #" . $movie->id . ") with " . $i . " photo.<br><br>";
-    echo "<a href='Addmovie.php'>Create another</a>";
+    ?>
+    <!DOCTYPE html >
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Thommo's Movie Database</title>
+        </head>
+        <body>
+            <div id="content">
+                <h1>Movie records</h1>
+                Created a record for <?= $movie->movie ?> (it is record #<?= $movie->id ?>) with <?= $i ?> photo.<br><br>
+                <a href='Addmovie.php'>Create another</a>
+            </div>
+        </body>
+    </html>
+    <?php
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
